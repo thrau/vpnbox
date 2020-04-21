@@ -44,8 +44,18 @@
             <div class="col s12">
               <ul class="collection with-header">
                 <li class="collection-header"><h5>Wifi Status</h5></li>
-                <li class="collection-item">{{wifi_status.wpa_state}}</li>
-                <li ng-if="wifi_status.ssid" class="collection-item">{{wifi_status.ssid}}</li>
+                <li class="collection-item">
+                  {{wifi_status.ssid ? wifi_status.ssid : wifi_status.wpa_state}}
+                  <span class="right">
+                    <span ng-switch="wifi_status.wpa_state">
+                      <i ng-switch-when="COMPLETED" class="material-icons green-text">signal_wifi_4_bar</i>
+                      <i ng-switch-when="DISCONNECTED" class="material-icons">signal_wifi_off</i>
+                      <i ng-switch-when="INACTIVE" class="material-icons">signal_wifi_off</i>
+                      <i ng-switch-when="SCANNING" class="material-icons">search</i>
+                      <i ng-switch-default class="material-icons grey-text">help</i>
+                    </span>
+                  </span>
+                </li>
               </ul>
             </div>
 
@@ -53,9 +63,14 @@
             <div class="col s12">
               <ul class="collection with-header">
                 <li class="collection-header"><h5>IP Info</h5></li>
-                <li class="collection-item">{{ipinfo.ip}}
+                <li ng-if="ipinfo.ip" class="collection-item">{{ipinfo.ip}}
                   <span class="right">
-                    {{get_flag(ipinfo.country)}}
+                    {{get_flag(ipinfo.country)}} {{ipinfo.country}}
+                  </span>
+                </li>
+                <li ng-if="!ipinfo.ip" class="collection-item">
+                  <span class="right">
+                    <i class="material-icons grey-text">help</i>
                   </span>
                 </li>
               </ul>
