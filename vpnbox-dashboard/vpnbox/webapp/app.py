@@ -1,5 +1,7 @@
+import json
 import logging
 import os
+import urllib.request
 
 import falcon
 
@@ -46,6 +48,12 @@ class WifiStatusResource:
         resp.media = commands.wpa_status()
 
 
+class IpInfoResource:
+    def on_get(self, req, resp):
+        doc = urllib.request.urlopen('http://ipinfo.io/json').read()
+        resp.media = json.loads(doc.decode('utf-8'))
+
+
 class HtmlResource:
 
     def __init__(self, fpath) -> None:
@@ -62,6 +70,8 @@ class HtmlResource:
 def setup(api: falcon.API):
     logging.basicConfig(level=logging.INFO)
     api.add_route('/api/devices', DevicesResource())
+
+    api.add_route('/api/ipinfo', IpInfoResource())
 
     services = ServicesResource()
     api.add_route('/api/services', services, suffix='list')

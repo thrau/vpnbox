@@ -97,6 +97,15 @@ ApiService = function ($http) {
             });
     };
 
+    this.loadIpInfo = function () {
+        return $http.get('/api/ipinfo')
+            .then(function successCallback(response) {
+                return response['data'];
+            }, function errorCallback(response) {
+                console.error(response);
+            });
+    };
+
 }
 
 AppController = function ($scope, $http, $timeout, $interval, apiService) {
@@ -109,6 +118,8 @@ AppController = function ($scope, $http, $timeout, $interval, apiService) {
     $scope.devices = [];
     $scope.networks = [];
     $scope.wifi_status = {};
+    $scope.ipinfo = {};
+
     $scope.get_flag = function (code) {
         return get_country(code).emoji;
     }
@@ -130,13 +141,15 @@ AppController = function ($scope, $http, $timeout, $interval, apiService) {
     apiService.loadDevices().then((devices) => {
         $scope.devices = devices;
     });
-
     apiService.loadNetworks().then((networks) => {
         $scope.networks = networks;
     });
     apiService.loadWifiStatus().then((status) => {
         $scope.wifi_status = status;
     });
+    apiService.loadIpInfo().then((info) => {
+        $scope.ipinfo = info;
+    })
 }
 
 console.debug('starting app module');

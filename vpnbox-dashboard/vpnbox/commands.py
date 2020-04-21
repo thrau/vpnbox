@@ -94,7 +94,3 @@ def wpa_status():
     lines = out.splitlines()
     pairs = [tuple(line.split('=', 1)) for line in lines if line]
     return dict(pairs)
-
-
-if __name__ == '__main__':
-    print(wpa_status())
