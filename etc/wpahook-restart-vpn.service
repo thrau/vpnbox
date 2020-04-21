@@ -1,0 +1,13 @@
+[Unit]
+Description=wpahook-restart-vpn
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User=root
+ExecStart=/sbin/wpa_cli -i wlan0 -a /home/pi/vpnbox/etc/wpahook-restart-vpn.sh
+Restart=on-failure
+RestartSec=1s
+
+[Install]
+WantedBy=multi-user.target
