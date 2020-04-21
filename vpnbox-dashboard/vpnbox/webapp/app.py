@@ -30,6 +30,22 @@ class ServicesResource:
     def _get_status(self, service):
         return commands.systemctl_show(service)
 
+
+class WifiScanResource:
+    def on_get(self, req, resp):
+        resp.media = commands.wpa_scan_result()
+
+
+class WifiNetworksResource:
+    def on_get(self, req, resp):
+        resp.media = commands.wpa_list_networks()
+
+
+class WifiStatusResource:
+    def on_get(self, req, resp):
+        resp.media = commands.wpa_status()
+
+
 class HtmlResource:
 
     def __init__(self, fpath) -> None:
@@ -50,6 +66,10 @@ def setup(api: falcon.API):
     services = ServicesResource()
     api.add_route('/api/services', services, suffix='list')
     api.add_route('/api/services/{service}', services, suffix='status')
+
+    api.add_route('/api/wifi/scan', WifiScanResource())
+    api.add_route('/api/wifi/networks', WifiNetworksResource())
+    api.add_route('/api/wifi/status', WifiStatusResource())
 
     # static resources
     working_dir = os.getcwd()
