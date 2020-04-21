@@ -1,0 +1,12 @@
+[Unit]
+Description=vpnbox-dashboard
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User=pi
+ExecStart=/bin/bash /home/pi/vpnbox/vpnbox-dashboard/bin/serve
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
