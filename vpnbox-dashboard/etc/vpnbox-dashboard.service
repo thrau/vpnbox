@@ -5,8 +5,9 @@ Wants=network-online.target
 
 [Service]
 User=pi
-ExecStart=/bin/bash /home/pi/vpnbox/vpnbox-dashboard/bin/serve
+ExecStart=/bin/bash -c 'cd /home/pi/vpnbox/vpnbox-dashboard; source .venv/bin/activate; bin/serve'
 Restart=on-failure
+RestartSec=2s
 
 [Install]
 WantedBy=multi-user.target

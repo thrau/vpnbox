@@ -68,7 +68,8 @@ class HtmlResource:
 
 
 def setup(api: falcon.API):
-    logging.basicConfig(level=logging.INFO)
+    logging.basicConfig(level=logging.WARNING)
+
     api.add_route('/api/devices', DevicesResource())
 
     api.add_route('/api/ipinfo', IpInfoResource())
