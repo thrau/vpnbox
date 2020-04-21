@@ -109,6 +109,9 @@ AppController = function ($scope, $http, $timeout, $interval, apiService) {
     $scope.devices = [];
     $scope.networks = [];
     $scope.wifi_status = {};
+    $scope.get_flag = function (code) {
+        return get_country(code).emoji;
+    }
 
     apiService.loadServices().then((services) => {
         $scope.services = services.filter((service) => {
