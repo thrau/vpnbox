@@ -44,7 +44,7 @@ def systemctl_list():
 
 def systemctl_restart(service):
     try:
-        cmd: sh.RunningCommand = sh.sudo.systemctl('restart', '\'%s\'' % service)
+        cmd: sh.RunningCommand = sh.sudo.systemctl('restart', service)
     except sh.ErrorReturnCode as e:
         logger.exception("Error executing restart %s", service)
         return e.exit_code
@@ -54,7 +54,7 @@ def systemctl_restart(service):
 
 def systemctl_stop(service):
     try:
-        cmd: sh.RunningCommand = sh.sudo.systemctl('stop', '\'%s\'' % service)
+        cmd: sh.RunningCommand = sh.sudo.systemctl('stop', service)
     except sh.ErrorReturnCode as e:
         logger.exception("Error executing stop %s", service)
         return e.exit_code
@@ -64,7 +64,7 @@ def systemctl_stop(service):
 
 def systemctl_start(service):
     try:
-        cmd: sh.RunningCommand = sh.sudo.systemctl('start', '\'%s\'' % service)
+        cmd: sh.RunningCommand = sh.sudo.systemctl('start', service)
     except sh.ErrorReturnCode as e:
         logger.exception("Error executing start %s", service)
         return e.exit_code
