@@ -91,8 +91,12 @@ class WifiStatusResource:
 
 class IpInfoResource:
     def on_get(self, req, resp):
-        doc = urllib.request.urlopen('http://ipinfo.io/json').read()
-        resp.media = json.loads(doc.decode('utf-8'))
+        try:
+            doc = urllib.request.urlopen('http://ipinfo.io/json', timeout=5).read()
+            resp.media = json.loads(doc.decode('utf-8'))
+        except:
+            logger.exception("Exception while fetching ipinfo.io/json")
+            resp.media = {}
 
 
 class HtmlResource:
