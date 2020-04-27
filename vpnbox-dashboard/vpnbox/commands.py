@@ -72,7 +72,7 @@ def systemctl_start(service):
     return cmd.exit_code
 
 
-def journalctl(unit, boots=1):
+def journalctl(unit, boots=0):
     cmd = sh.journalctl('-u', unit, '-b', boots)
     out = cmd.stdout.decode('utf-8')
     return out
