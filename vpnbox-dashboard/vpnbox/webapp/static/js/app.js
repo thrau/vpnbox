@@ -147,11 +147,13 @@ AppController = function ($scope, $http, $timeout, $interval, apiService) {
 
     $scope.restartVpn = function () {
         $scope.restartButtonDisabled = true;
-        apiService.doRestartService("openvpn-client@*")
+        apiService.doRestartService("openvpn-client@vpnbox")
             .then(response => {
+                console.error("Restarting VPN");
                 $scope.restartButtonDisabled = false;
             }, error => {
-                console.error("Error restarting service", error)
+                console.error("Error restarting service", error);
+                M.toast({html: 'Error restarting VPN'});
                 $scope.restartButtonDisabled = false;
             });
     }

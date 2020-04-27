@@ -113,6 +113,13 @@ class HealthResource:
         }
 
     def _get_vpn_status(self):
+        try:
+            status = commands.systemctl_show('openvpn-client@vpnbox')
+            if status['SubState'] != 'running':
+                return False
+        except:
+            return False
+
         ifs = commands.ip_a()
         for i in ifs:
             if i['ifname'] != 'tun0':
@@ -127,7 +134,7 @@ class HealthResource:
 
     def _get_wifi_status(self):
         try:
-            return commands.wpa_status() == 'COMPLETED'
+            return commands.wpa_status()['wpa_state'] == 'COMPLETED'
         except:
             return False
 
