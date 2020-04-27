@@ -106,6 +106,15 @@ ApiService = function ($http) {
             });
     };
 
+    this.loadHealth = function () {
+        return $http.get('/api/health')
+            .then(function successCallback(response) {
+                return response['data'];
+            }, function errorCallback(response) {
+                console.error(response);
+            });
+    };
+
     this.loadLogFile = function (service) {
         return $http.get('/api/services/' + service + '/log')
             .then(function successCallback(response) {
@@ -128,6 +137,7 @@ AppController = function ($scope, $http, $timeout, $interval, apiService) {
     $scope.networks = [];
     $scope.wifi_status = {};
     $scope.ipinfo = {};
+    $scope.health = {};
 
     $scope.get_flag = function (code) {
         return get_country(code).emoji;
@@ -147,6 +157,9 @@ AppController = function ($scope, $http, $timeout, $interval, apiService) {
         });
     });
 
+    apiService.loadHealth().then((data) => {
+        $scope.health = data;
+    });
     apiService.loadDevices().then((devices) => {
         $scope.devices = devices;
     });

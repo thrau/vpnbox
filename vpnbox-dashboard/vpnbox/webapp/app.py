@@ -106,6 +106,45 @@ class IpInfoResource:
             resp.media = {}
 
 
+class HealthResource:
+    def on_get(self, req, resp):
+        wifi_status = self._get_wifi_status()
+        internet_status = self._get_internet_status()
+        vpn_status = self._get_vpn_status()
+
+        resp.media = {
+            'wifi': wifi_status,
+            'internet': internet_status,
+            'vpn': vpn_status,
+        }
+
+    def _get_vpn_status(self):
+        ifs = commands.ip_a()
+        for i in ifs:
+            if i['ifname'] != 'tun0':
+                continue
+
+            for addr in i['addr_info']:
+                if addr['family'] == 'inet':
+                    if addr['local']:
+                        return True
+
+        return False
+
+    def _get_wifi_status(self):
+        try:
+            return commands.wpa_status() == 'COMPLETED'
+        except:
+            return False
+
+    def _get_internet_status(self):
+        try:
+            return commands.is_host_up('1.1.1.1')
+        except:
+            logger.exception("error while checking if host is up")
+            return False
+
+
 class HtmlResource:
 
     def __init__(self, fpath) -> None:
@@ -125,6 +164,8 @@ def setup(api: falcon.API):
     api.add_route('/api/devices', DevicesResource())
 
     api.add_route('/api/ipinfo', IpInfoResource())
+
+    api.add_route('/api/health', HealthResource())
 
     services = ServicesResource()
     api.add_route('/api/services', services, suffix='list')

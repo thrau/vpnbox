@@ -9,6 +9,14 @@ def ip_a():
     return doc
 
 
+def is_host_up(host) -> bool:
+    try:
+        cmd = sh.ping('-c', '1', '-W', '2', host)
+        return cmd.exit_code == 0
+    except sh.ErrorReturnCode:
+        return False
+
+
 def systemctl_show(service):
     cmd = sh.systemctl('show', '--no-page', service)
     out = cmd.stdout.decode('utf-8')

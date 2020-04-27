@@ -41,6 +41,40 @@
       <div class="row">
         <div class="col s12 m4">
           <div class="row">
+            <!-- system health -->
+            <div class="col s12">
+              <ul class="collection with-header">
+                <li class="collection-header"><h5>Health</h5></li>
+                <li class="collection-item">WiFi
+                  <span class="right">
+                    <span ng-switch="health.wifi">
+                      <i ng-switch-when="true" class="material-icons green-text">check_circle</i>
+                      <i ng-switch-when="false" class="material-icons red-text">offline_bolt</i>
+                      <i ng-switch-default class="material-icons grey-text">help</i>
+                    </span>
+                  </span>
+                </li>
+                <li class="collection-item">Internet
+                  <span class="right">
+                    <span ng-switch="health.internet">
+                      <i ng-switch-when="true" class="material-icons green-text">check_circle</i>
+                      <i ng-switch-when="false" class="material-icons red-text">offline_bolt</i>
+                      <i ng-switch-default class="material-icons grey-text">help</i>
+                    </span>
+                  </span>
+                </li>
+                <li class="collection-item">VPN
+                  <span class="right">
+                    <span ng-switch="health.vpn">
+                      <i ng-switch-when="true" class="material-icons green-text">check_circle</i>
+                      <i ng-switch-when="false" class="material-icons red-text">offline_bolt</i>
+                      <i ng-switch-default class="material-icons grey-text">help</i>
+                    </span>
+                  </span>
+                </li>
+              </ul>
+            </div>
+
             <!-- wifi status -->
             <div class="col s12">
               <ul class="collection with-header">
@@ -76,7 +110,12 @@
                 </li>
               </ul>
             </div>
+
+            <div class="col s12">
+              <a class="waves-effect waves-light btn-small">Restart VPN</a>
+            </div>
           </div>
+
         </div>
 
         <!-- networks -->
