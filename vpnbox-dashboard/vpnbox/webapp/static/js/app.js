@@ -130,7 +130,7 @@ ApiService = function ($http) {
 
 }
 
-AppController = function ($scope, $http, $timeout, $interval, apiService) {
+AppController = function ($scope, $http, $timeout, $window, apiService) {
     console.debug("creating AppController");
     const $this = this;
 
@@ -149,8 +149,11 @@ AppController = function ($scope, $http, $timeout, $interval, apiService) {
         $scope.restartButtonDisabled = true;
         apiService.doRestartService("openvpn-client@vpnbox")
             .then(response => {
-                console.error("Restarting VPN");
+                M.toast({html: 'Restarting VPN'});
                 $scope.restartButtonDisabled = false;
+                $timeout(function () {
+                    $window.location.reload()
+                }, 500);
             }, error => {
                 console.error("Error restarting service", error);
                 M.toast({html: 'Error restarting VPN'});
@@ -198,6 +201,6 @@ AppController = function ($scope, $http, $timeout, $interval, apiService) {
 
 console.debug('starting app module');
 angular.module('app').controller('AppController', [
-    '$scope', '$http', '$timeout', '$interval', 'apiService', AppController
+    '$scope', '$http', '$timeout', '$window', 'apiService', AppController
 ]);
 
