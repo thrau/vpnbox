@@ -31,6 +31,33 @@ def systemctl_list():
     return records
 
 
+def systemctl_restart(service):
+    try:
+        cmd: sh.RunningCommand = sh.sudo.systemctl('restart', service)
+    except sh.ErrorReturnCode as e:
+        return e.exit_code
+
+    return cmd.exit_code
+
+
+def systemctl_stop(service):
+    try:
+        cmd: sh.RunningCommand = sh.sudo.systemctl('stop', service)
+    except sh.ErrorReturnCode as e:
+        return e.exit_code
+
+    return cmd.exit_code
+
+
+def systemctl_start(service):
+    try:
+        cmd: sh.RunningCommand = sh.sudo.systemctl('start', service)
+    except sh.ErrorReturnCode as e:
+        return e.exit_code
+
+    return cmd.exit_code
+
+
 def _parse_wpa_cli_table(out, parse_flags=False):
     lines = out.splitlines()
     header = lines[0]

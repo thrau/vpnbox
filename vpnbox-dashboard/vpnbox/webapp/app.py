@@ -26,11 +26,52 @@ class ServicesResource:
     def on_get_status(self, req, resp, service):
         resp.media = self._get_status(service)
 
+    def on_get_running(self, req, resp, service):
+        status = self._require_service(service)
+
+        resp.media = status['SubState'] == 'running'
+
+    def on_patch_running(self, req, resp: falcon.Response, service):
+        self._require_service(service)
+
+        code = commands.systemctl_start(service)
+        if code == 0:
+            resp.media = True
+        else:
+            resp.media = False
+            raise falcon.HTTPUnauthorized
+
+    def on_put_running(self, req, resp: falcon.Response, service):
+        self._require_service(service)
+
+        code = commands.systemctl_restart(service)
+        if code == 0:
+            resp.media = True
+        else:
+            resp.media = False
+            raise falcon.HTTPUnauthorized
+
+    def on_delete_running(self, req, resp: falcon.Response, service):
+        self._require_service(service)
+
+        code = commands.systemctl_stop(service)
+        if code == 0:
+            resp.media = True
+        else:
+            resp.media = False
+            raise falcon.HTTPUnauthorized
+
     def _get_list(self):
         return commands.systemctl_list()
 
     def _get_status(self, service):
         return commands.systemctl_show(service)
+
+    def _require_service(self, service):
+        status = self._get_status(service)
+        if status['LoadState'] == 'not-found':
+            raise falcon.HTTPNotFound
+        return status
 
 
 class WifiScanResource:
@@ -77,6 +118,7 @@ def setup(api: falcon.API):
     services = ServicesResource()
     api.add_route('/api/services', services, suffix='list')
     api.add_route('/api/services/{service}', services, suffix='status')
+    api.add_route('/api/services/{service}/running', services, suffix='running')
 
     api.add_route('/api/wifi/scan', WifiScanResource())
     api.add_route('/api/wifi/networks', WifiNetworksResource())
