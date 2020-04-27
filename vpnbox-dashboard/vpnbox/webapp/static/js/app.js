@@ -124,6 +124,10 @@ ApiService = function ($http) {
             });
     }
 
+    this.doRestartService = function (service) {
+        return $http.put('/api/services/' + service + '/running')
+    }
+
 }
 
 AppController = function ($scope, $http, $timeout, $interval, apiService) {
@@ -138,6 +142,19 @@ AppController = function ($scope, $http, $timeout, $interval, apiService) {
     $scope.wifi_status = {};
     $scope.ipinfo = {};
     $scope.health = {};
+
+    $scope.restartButtonDisabled = false;
+
+    $scope.restartVpn = function () {
+        $scope.restartButtonDisabled = true;
+        apiService.doRestartService("openvpn-client@*")
+            .then(response => {
+                $scope.restartButtonDisabled = false;
+            }, error => {
+                console.error("Error restarting service", error)
+                $scope.restartButtonDisabled = false;
+            });
+    }
 
     $scope.get_flag = function (code) {
         return get_country(code).emoji;

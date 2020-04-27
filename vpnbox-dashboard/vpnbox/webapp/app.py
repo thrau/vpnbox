@@ -36,8 +36,6 @@ class ServicesResource:
         resp.media = status['SubState'] == 'running'
 
     def on_patch_running(self, req, resp: falcon.Response, service):
-        self._require_service(service)
-
         code = commands.systemctl_start(service)
         if code == 0:
             resp.media = True
@@ -46,8 +44,6 @@ class ServicesResource:
             raise falcon.HTTPUnauthorized
 
     def on_put_running(self, req, resp: falcon.Response, service):
-        self._require_service(service)
-
         code = commands.systemctl_restart(service)
         if code == 0:
             resp.media = True
@@ -56,8 +52,6 @@ class ServicesResource:
             raise falcon.HTTPUnauthorized
 
     def on_delete_running(self, req, resp: falcon.Response, service):
-        self._require_service(service)
-
         code = commands.systemctl_stop(service)
         if code == 0:
             resp.media = True
