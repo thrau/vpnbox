@@ -1,0 +1,10 @@
+pre.logfile {
+    display: block;
+    white-space: pre;
+    margin: 1em 0;
+    overflow: scroll;
+    font-size: 80%;
+    padding: 1em;
+    border: 1px solid #000;
+    max-height: 40em;
+}

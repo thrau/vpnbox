@@ -26,6 +26,10 @@ class ServicesResource:
     def on_get_status(self, req, resp, service):
         resp.media = self._get_status(service)
 
+    def on_get_log(self, req, resp: falcon.Response, service):
+        resp.content_type = 'text/plain'
+        resp.body = self._get_log(service)
+
     def on_get_running(self, req, resp, service):
         status = self._require_service(service)
 
@@ -66,6 +70,9 @@ class ServicesResource:
 
     def _get_status(self, service):
         return commands.systemctl_show(service)
+
+    def _get_log(self, service):
+        return commands.journalctl(service)
 
     def _require_service(self, service):
         status = self._get_status(service)
@@ -123,6 +130,7 @@ def setup(api: falcon.API):
     api.add_route('/api/services', services, suffix='list')
     api.add_route('/api/services/{service}', services, suffix='status')
     api.add_route('/api/services/{service}/running', services, suffix='running')
+    api.add_route('/api/services/{service}/log', services, suffix='log')
 
     api.add_route('/api/wifi/scan', WifiScanResource())
     api.add_route('/api/wifi/networks', WifiNetworksResource())

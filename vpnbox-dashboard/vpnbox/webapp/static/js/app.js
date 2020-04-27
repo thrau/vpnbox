@@ -106,6 +106,15 @@ ApiService = function ($http) {
             });
     };
 
+    this.loadLogFile = function (service) {
+        return $http.get('/api/services/' + service + '/log')
+            .then(function successCallback(response) {
+                return response['data'];
+            }, function errorCallback(response) {
+                console.error(response);
+            });
+    }
+
 }
 
 AppController = function ($scope, $http, $timeout, $interval, apiService) {
@@ -149,7 +158,10 @@ AppController = function ($scope, $http, $timeout, $interval, apiService) {
     });
     apiService.loadIpInfo().then((info) => {
         $scope.ipinfo = info;
-    })
+    });
+    apiService.loadLogFile('openvpn-client@*.service').then((data) => {
+        $scope.log = data;
+    });
 }
 
 console.debug('starting app module');

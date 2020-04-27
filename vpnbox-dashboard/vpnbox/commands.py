@@ -58,6 +58,12 @@ def systemctl_start(service):
     return cmd.exit_code
 
 
+def journalctl(unit, boots=1):
+    cmd = sh.journalctl('-u', unit, '-b', boots)
+    out = cmd.stdout.decode('utf-8')
+    return out
+
+
 def _parse_wpa_cli_table(out, parse_flags=False):
     lines = out.splitlines()
     header = lines[0]

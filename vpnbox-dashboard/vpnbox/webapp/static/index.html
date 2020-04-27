@@ -6,6 +6,7 @@
   <link href="/static/css/icons.css" rel="stylesheet">
   <!--Import materialize.css-->
   <link type="text/css" rel="stylesheet" href="/static/css/materialize.min.css" media="screen,projection"/>
+  <link type="text/css" rel="stylesheet" href="/static/css/dashboard.css" media="screen,projection"/>
 
   <!--JavaScript at end of body for optimized loading-->
   <script type="text/javascript" src="/static/js/materialize.min.js"></script>
@@ -133,6 +134,13 @@
             </tbody>
           </table>
 
+        </div>
+      </div>
+
+      <div class="row">
+        <h2 class="header col s12 light">VPN Log</h2>
+        <div class="col s12 m12">
+          <pre class="logfile">{{log}}</pre>
         </div>
       </div>
     </div>
