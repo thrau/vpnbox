@@ -191,7 +191,7 @@ AppController = function ($scope, $http, $timeout, $interval, apiService) {
     apiService.loadIpInfo().then((info) => {
         $scope.ipinfo = info;
     });
-    apiService.loadLogFile('openvpn-client@*.service').then((data) => {
+    apiService.loadLogFile('openvpn-client@vpnbox.service').then((data) => {
         $scope.log = data;
     });
 }
